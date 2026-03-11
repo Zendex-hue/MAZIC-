@@ -1,0 +1,273 @@
+[
+  {
+    "id": 6,
+    "author": "user",
+    "payload": {
+      "type": "text",
+      "text": "Make a AI ASSISTANT APP LIKE THIS TYPE \n\n+-+ (SETTINGS/SIDEBAR)\n\n                             MAZIC\n                    AN AI ASSISTANT \n \nGENERATE IMAGE    WRITE STORY\n\nTRAVEL PLAN        TRANSLATE TEXT       \n \n",
+      "files": [],
+      "fileUploads": [],
+      "cMarkNode": {}
+    },
+    "createdTimestamp": {
+      "seconds": 1767966261,
+      "nanos": 789000000
+    }
+  },
+  {
+    "id": 7,
+    "author": "model",
+    "payload": {
+      "type": "thinking",
+      "text": "**Designing App Architecture**\n\nI'm currently focused on the initial layout for \"MAZIC\". I envision a clean interface with a settings/sidebar icon at the top, a prominent \"MAZIC\" heading with the \"AN AI ASSISTANT\" subheading centered below it. The core functionality will be accessed through a grid or button layout, with \"GENERATE IMAGE\" as the first button.\n\n\n**Refining Feature Implementation**\n\nI'm now diving into the component structure, sketching out the `components/` directory. I'm focusing on feature-specific UIs like `ImageGenWindow` and `StoryWindow`. I'm also planning the `services/geminiService.ts` for Gemini API integration. I'm considering TypeScript interfaces, and I'm going to start laying out the high-level `App.tsx` logic.\n\n\n**Detailing AI Interactions**\n\nI'm solidifying the AI interaction strategy now. For text, I'm leaning towards `gemini-3-flash-preview`, and `gemini-2.5-flash-image` for image generation. Travel planning will leverage the `googleSearch` tool. Design-wise, I'm envisioning a modern, dark mode with neon accents – purple and cyan for \"Mazic\" – with some glassmorphism. For navigation, I'm thinking of state-based view switching for a seamless single-page feel.\n\n\n**Clarifying Results Presentation**\n\nI'm now prioritizing the results UI design, especially for image generation, ensuring seamless inline data handling as per instructions. For travel plans, I'm integrating search grounding to ensure the \"Mazic\" magic is evident.\n\n\n",
+      "cMarkNode": {}
+    },
+    "createdTimestamp": {
+      "seconds": 1767966261,
+      "nanos": 790000000
+    },
+    "doneTimestamp": {
+      "seconds": 1767966271,
+      "nanos": 238000000
+    }
+  },
+  {
+    "id": 8,
+    "author": "model",
+    "payload": {
+      "type": "generationTable",
+      "entries": [
+        {
+          "path": "metadata.json",
+          "generationType": 0,
+          "isDone": true,
+          "description": "App metadata including permissions for camera, microphone and geolocation to support full AI assistant features.",
+          "diffs": [
+            {
+              "target": "",
+              "replacement": "\n{\n  \"name\": \"Mazic AI Assistant\",\n  \"description\": \"A powerful multi-modal AI assistant capable of generating images, writing stories, planning travel, and translating text with a sleek, modern interface.\",\n  \"requestFramePermissions\": [\n    \"camera\",\n    \"microphone\",\n    \"geolocation\"\n  ]\n}\n"
+            }
+          ]
+        },
+        {
+          "path": "index.html",
+          "generationType": 0,
+          "isDone": true,
+          "description": "Primary HTML entry point with Tailwind CSS and Inter font.",
+          "diffs": [
+            {
+              "target": "",
+              "replacement": "\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Mazic AI Assistant</title>\n    <script src=\"https://cdn.tailwindcss.com\"></script>\n    <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n    <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap\" rel=\"stylesheet\">\n    <style>\n        body {\n            font-family: 'Inter', sans-serif;\n            background-color: #0f172a;\n            color: #f8fafc;\n        }\n        .glass {\n            background: rgba(30, 41, 59, 0.7);\n            backdrop-filter: blur(12px);\n            border: 1px solid rgba(255, 255, 255, 0.1);\n        }\n        .mazic-gradient {\n            background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);\n            -webkit-background-clip: text;\n            -webkit-text-fill-color: transparent;\n        }\n        .mazic-bg-gradient {\n            background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);\n        }\n    </style>\n</head>\n<body>\n    <div id=\"root\"></div>\n</body>\n</html>\n"
+            }
+          ]
+        },
+        {
+          "path": "index.tsx",
+          "generationType": 0,
+          "isDone": true,
+          "description": "React entry point using React 18+ createRoot API.",
+          "diffs": [
+            {
+              "target": "",
+              "replacement": "\nimport React from 'react';\nimport ReactDOM from 'react-dom/client';\nimport App from './App';\n\nconst rootElement = document.getElementById('root');\nif (!rootElement) {\n  throw new Error(\"Could not find root element to mount to\");\n}\n\nconst root = ReactDOM.createRoot(rootElement);\nroot.render(\n  <React.StrictMode>\n    <App />\n  </React.StrictMode>\n);\n"
+            }
+          ]
+        },
+        {
+          "path": "types.ts",
+          "generationType": 0,
+          "isDone": true,
+          "description": "Global TypeScript types and interfaces.",
+          "diffs": [
+            {
+              "target": "",
+              "replacement": "\nexport type FeatureType = 'IMAGE' | 'STORY' | 'TRAVEL' | 'TRANSLATE' | 'HOME';\n\nexport interface Message {\n  role: 'user' | 'assistant';\n  content: string;\n  imageUrl?: string;\n  groundingLinks?: Array<{ title: string; uri: string }>;\n}\n\nexport interface TravelResult {\n  itinerary: string;\n  links: Array<{ title: string; uri: string }>;\n}\n"
+            }
+          ]
+        },
+        {
+          "path": "services/geminiService.ts",
+          "generationType": 0,
+          "isDone": true,
+          "description": "Service for interacting with Gemini API models.",
+          "diffs": [
+            {
+              "target": "",
+              "replacement": "\nimport { GoogleGenAI, Type, GenerateContentResponse } from \"@google/genai\";\n\nconst getAI = () => new GoogleGenAI({ apiKey: process.env.API_KEY || '' });\n\nexport const generateImage = async (prompt: string): Promise<string | null> => {\n  const ai = getAI();\n  try {\n    const response = await ai.models.generateContent({\n      model: 'gemini-2.5-flash-image',\n      contents: { parts: [{ text: prompt }] },\n      config: {\n        imageConfig: { aspectRatio: \"1:1\" }\n      }\n    });\n\n    for (const part of response.candidates[0].content.parts) {\n      if (part.inlineData) {\n        return `data:image/png;base64,${part.inlineData.data}`;\n      }\n    }\n    return null;\n  } catch (error) {\n    console.error(\"Image generation error:\", error);\n    throw error;\n  }\n};\n\nexport const generateStory = async (topic: string): Promise<string> => {\n  const ai = getAI();\n  const response = await ai.models.generateContent({\n    model: 'gemini-3-flash-preview',\n    contents: topic,\n    config: {\n      systemInstruction: \"You are a creative storyteller. Write a compelling, immersive story based on the user's prompt. Use markdown for formatting.\",\n    }\n  });\n  return response.text || \"I couldn't write a story this time.\";\n};\n\nexport const planTravel = async (destination: string, location?: { lat: number; lng: number }): Promise<{ text: string, links: any[] }> => {\n  const ai = getAI();\n  const response = await ai.models.generateContent({\n    model: 'gemini-3-flash-preview',\n    contents: `Plan a travel itinerary for: ${destination}`,\n    config: {\n      tools: [{ googleSearch: {} }],\n      toolConfig: location ? {\n        retrievalConfig: {\n          latLng: {\n            latitude: location.lat,\n            longitude: location.lng\n          }\n        }\n      } : undefined\n    }\n  });\n\n  return {\n    text: response.text || \"\",\n    links: response.candidates?.[0]?.groundingMetadata?.groundingChunks?.map((chunk: any) => chunk.web) || []\n  };\n};\n\nexport const translateText = async (text: string, targetLanguage: string): Promise<string> => {\n  const ai = getAI();\n  const response = await ai.models.generateContent({\n    model: 'gemini-3-flash-preview',\n    contents: `Translate the following text to ${targetLanguage}: \"${text}\"`,\n  });\n  return response.text || \"Translation failed.\";\n};\n"
+            }
+          ]
+        },
+        {
+          "path": "components/Sidebar.tsx",
+          "generationType": 0,
+          "isDone": true,
+          "description": "Sidebar component for settings and navigation.",
+          "diffs": [
+            {
+              "target": "",
+              "replacement": "\nimport React from 'react';\n\ninterface SidebarProps {\n  isOpen: boolean;\n  onClose: () => void;\n  onNavigate: (view: 'HOME') => void;\n}\n\nexport const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, onNavigate }) => {\n  return (\n    <div \n      className={`fixed inset-0 z-50 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}\n    >\n      <div className=\"absolute inset-0 bg-black/60 backdrop-blur-sm\" onClick={onClose} />\n      <div \n        className={`absolute left-0 top-0 h-full w-72 glass shadow-2xl transition-transform duration-300 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}\n      >\n        <div className=\"p-6 h-full flex flex-col\">\n          <div className=\"flex items-center justify-between mb-10\">\n            <h2 className=\"text-2xl font-bold mazic-gradient\">MAZIC</h2>\n            <button onClick={onClose} className=\"p-2 hover:bg-white/10 rounded-full transition-colors\">\n              <svg className=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\">\n                <path strokeLinecap=\"round\" strokeLinejoin=\"round\" strokeWidth={2} d=\"M6 18L18 6M6 6l12 12\" />\n              </svg>\n            </button>\n          </div>\n\n          <nav className=\"space-y-4 flex-1\">\n            <button \n              onClick={() => { onNavigate('HOME'); onClose(); }}\n              className=\"w-full flex items-center space-x-3 p-3 rounded-xl hover:bg-white/5 transition-all group\"\n            >\n              <div className=\"p-2 rounded-lg bg-indigo-500/20 group-hover:bg-indigo-500/40 transition-colors\">\n                <svg className=\"w-5 h-5 text-indigo-400\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\">\n                  <path strokeLinecap=\"round\" strokeLinejoin=\"round\" strokeWidth={2} d=\"M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6\" />\n                </svg>\n              </div>\n              <span className=\"font-medium\">Dashboard</span>\n            </button>\n\n            <div className=\"pt-4 border-t border-white/10\">\n              <h3 className=\"px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2\">History</h3>\n              <div className=\"px-3 text-sm text-gray-500 italic\">No recent activity</div>\n            </div>\n          </nav>\n\n          <div className=\"pt-6 border-t border-white/10 mt-auto\">\n            <div className=\"flex items-center space-x-3 p-3\">\n              <div className=\"w-10 h-10 rounded-full mazic-bg-gradient flex items-center justify-center font-bold text-white shadow-lg\">\n                M\n              </div>\n              <div>\n                <p className=\"text-sm font-semibold\">Mazic Pro User</p>\n                <p className=\"text-xs text-gray-400\">Standard Plan</p>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  );\n};\n"
+            }
+          ]
+        },
+        {
+          "path": "components/FeatureCard.tsx",
+          "generationType": 0,
+          "isDone": true,
+          "description": "Reusable card component for main menu features.",
+          "diffs": [
+            {
+              "target": "",
+              "replacement": "\nimport React from 'react';\n\ninterface FeatureCardProps {\n  title: string;\n  icon: React.ReactNode;\n  color: string;\n  onClick: () => void;\n}\n\nexport const FeatureCard: React.FC<FeatureCardProps> = ({ title, icon, color, onClick }) => {\n  return (\n    <button \n      onClick={onClick}\n      className={`group relative overflow-hidden glass p-8 rounded-3xl transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-${color}-500/20 flex flex-col items-center justify-center space-y-4`}\n    >\n      <div className={`absolute inset-0 bg-gradient-to-br from-${color}-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity`} />\n      <div className={`p-4 rounded-2xl bg-${color}-500/20 text-${color}-400 group-hover:scale-110 transition-transform duration-300`}>\n        {icon}\n      </div>\n      <span className=\"text-sm font-bold tracking-widest text-gray-300 group-hover:text-white transition-colors uppercase\">\n        {title}\n      </span>\n    </button>\n  );\n};\n"
+            }
+          ]
+        },
+        {
+          "path": "components/LoadingSpinner.tsx",
+          "generationType": 0,
+          "isDone": true,
+          "description": "A styled loading spinner with magic vibe.",
+          "diffs": [
+            {
+              "target": "",
+              "replacement": "\nimport React from 'react';\n\nexport const LoadingSpinner: React.FC = () => {\n  return (\n    <div className=\"flex flex-col items-center justify-center p-12 space-y-4\">\n      <div className=\"relative\">\n        <div className=\"w-16 h-16 rounded-full border-4 border-white/5 animate-pulse\" />\n        <div className=\"absolute top-0 w-16 h-16 rounded-full border-t-4 border-pink-500 animate-spin\" />\n      </div>\n      <p className=\"text-pink-400 font-medium animate-pulse\">Working magic...</p>\n    </div>\n  );\n};\n"
+            }
+          ]
+        },
+        {
+          "path": "App.tsx",
+          "generationType": 0,
+          "isDone": true,
+          "description": "Main application component managing routing and core features.",
+          "diffs": [
+            {
+              "target": "",
+              "replacement": "\nimport React, { useState, useEffect } from 'react';\nimport { Sidebar } from './components/Sidebar';\nimport { FeatureCard } from './components/FeatureCard';\nimport { LoadingSpinner } from './components/LoadingSpinner';\nimport { FeatureType } from './types';\nimport { generateImage, generateStory, planTravel, translateText } from './services/geminiService';\n\nconst App: React.FC = () => {\n  const [sidebarOpen, setSidebarOpen] = useState(false);\n  const [currentView, setCurrentView] = useState<FeatureType>('HOME');\n  const [isLoading, setIsLoading] = useState(false);\n  const [prompt, setPrompt] = useState('');\n  const [result, setResult] = useState<any>(null);\n  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | undefined>();\n\n  useEffect(() => {\n    if (navigator.geolocation) {\n      navigator.geolocation.getCurrentPosition(\n        (pos) => setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude }),\n        (err) => console.log(\"Location access denied\", err)\n      );\n    }\n  }, []);\n\n  const handleAction = async () => {\n    if (!prompt.trim()) return;\n    setIsLoading(true);\n    setResult(null);\n    try {\n      let res;\n      switch (currentView) {\n        case 'IMAGE':\n          res = await generateImage(prompt);\n          setResult({ type: 'IMAGE', data: res });\n          break;\n        case 'STORY':\n          res = await generateStory(prompt);\n          setResult({ type: 'TEXT', data: res });\n          break;\n        case 'TRAVEL':\n          res = await planTravel(prompt, userLocation);\n          setResult({ type: 'TRAVEL', data: res.text, links: res.links });\n          break;\n        case 'TRANSLATE':\n          // Simplified for single prompt: \"Hello to French\"\n          const parts = prompt.split(' to ');\n          const textToTranslate = parts[0];\n          const targetLang = parts[1] || 'Spanish';\n          res = await translateText(textToTranslate, targetLang);\n          setResult({ type: 'TEXT', data: res });\n          break;\n      }\n    } catch (error) {\n      alert(\"Something went wrong. Please try again.\");\n    } finally {\n      setIsLoading(false);\n    }\n  };\n\n  const renderHome = () => (\n    <div className=\"flex flex-col items-center justify-center min-h-[80vh] px-4 space-y-12\">\n      <div className=\"text-center space-y-2\">\n        <h1 className=\"text-7xl md:text-9xl font-black tracking-tighter mazic-gradient drop-shadow-2xl\">\n          MAZIC\n        </h1>\n        <p className=\"text-lg md:text-xl font-medium text-gray-400 tracking-[0.3em] uppercase opacity-80\">\n          An AI Assistant\n        </p>\n      </div>\n\n      <div className=\"grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-2xl\">\n        <FeatureCard \n          title=\"Generate Image\" \n          color=\"blue\"\n          icon={<svg className=\"w-8 h-8\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path strokeLinecap=\"round\" strokeLinejoin=\"round\" strokeWidth={2} d=\"M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z\" /></svg>}\n          onClick={() => setCurrentView('IMAGE')}\n        />\n        <FeatureCard \n          title=\"Write Story\" \n          color=\"purple\"\n          icon={<svg className=\"w-8 h-8\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path strokeLinecap=\"round\" strokeLinejoin=\"round\" strokeWidth={2} d=\"M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253\" /></svg>}\n          onClick={() => setCurrentView('STORY')}\n        />\n        <FeatureCard \n          title=\"Travel Plan\" \n          color=\"emerald\"\n          icon={<svg className=\"w-8 h-8\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path strokeLinecap=\"round\" strokeLinejoin=\"round\" strokeWidth={2} d=\"M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7\" /></svg>}\n          onClick={() => setCurrentView('TRAVEL')}\n        />\n        <FeatureCard \n          title=\"Translate Text\" \n          color=\"pink\"\n          icon={<svg className=\"w-8 h-8\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path strokeLinecap=\"round\" strokeLinejoin=\"round\" strokeWidth={2} d=\"M3 5h12M9 3v2m1.048 9.5a18.022 18.022 0 01-3.827-5.802M11 15a11.95 11.95 0 01-2.968-2.815M7.51 5c.67 2.34 2.214 4.478 4.485 6.49m3.234 3.326a2.99 2.99 0 012.828 2.828 2.99 2.99 0 01-2.828 2.828 2.99 2.99 0 01-2.828-2.828 2.99 2.99 0 012.828-2.828z\" /></svg>}\n          onClick={() => setCurrentView('TRANSLATE')}\n        />\n      </div>\n    </div>\n  );\n\n  const renderFeatureView = () => {\n    const titles = {\n      IMAGE: 'Generate Image',\n      STORY: 'Write Story',\n      TRAVEL: 'Travel Plan',\n      TRANSLATE: 'Translate Text',\n      HOME: ''\n    };\n\n    const placeholders = {\n      IMAGE: 'Describe the image you want to create...',\n      STORY: 'Give me a theme or title for your story...',\n      TRAVEL: 'Where do you want to go and for how long?',\n      TRANSLATE: 'Type something to translate (e.g., Hello to Spanish)...'\n    };\n\n    return (\n      <div className=\"max-w-4xl mx-auto px-4 py-8 space-y-8 animate-fadeIn\">\n        <div className=\"flex items-center space-x-4 mb-4\">\n          <button \n            onClick={() => { setCurrentView('HOME'); setResult(null); setPrompt(''); }}\n            className=\"p-2 hover:bg-white/10 rounded-full transition-colors\"\n          >\n            <svg className=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\">\n              <path strokeLinecap=\"round\" strokeLinejoin=\"round\" strokeWidth={2} d=\"M10 19l-7-7m0 0l7-7m-7 7h18\" />\n            </svg>\n          </button>\n          <h2 className=\"text-3xl font-bold\">{titles[currentView]}</h2>\n        </div>\n\n        <div className=\"glass p-6 rounded-3xl space-y-4 shadow-xl\">\n          <textarea\n            value={prompt}\n            onChange={(e) => setPrompt(e.target.value)}\n            placeholder={placeholders[currentView as keyof typeof placeholders]}\n            className=\"w-full bg-white/5 border border-white/10 rounded-2xl p-4 min-h-[120px] focus:ring-2 focus:ring-pink-500 focus:outline-none text-lg transition-all\"\n          />\n          <button \n            onClick={handleAction}\n            disabled={isLoading || !prompt.trim()}\n            className=\"w-full mazic-bg-gradient py-4 rounded-2xl font-bold text-lg shadow-lg shadow-pink-500/25 active:scale-95 transition-all disabled:opacity-50\"\n          >\n            {isLoading ? 'Processing...' : `Generate ${titles[currentView].split(' ')[1]}`}\n          </button>\n        </div>\n\n        {isLoading && <LoadingSpinner />}\n\n        {result && (\n          <div className=\"glass p-8 rounded-3xl space-y-6 animate-slideUp\">\n            {result.type === 'IMAGE' && (\n              <div className=\"flex flex-col items-center\">\n                <img src={result.data} alt=\"Generated\" className=\"rounded-2xl shadow-2xl max-w-full border border-white/10\" />\n                <a \n                  href={result.data} \n                  download=\"mazic-gen.png\"\n                  className=\"mt-6 flex items-center space-x-2 text-pink-400 hover:text-pink-300 font-medium\"\n                >\n                  <svg className=\"w-5 h-5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path strokeLinecap=\"round\" strokeLinejoin=\"round\" strokeWidth={2} d=\"M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4\" /></svg>\n                  <span>Download Image</span>\n                </a>\n              </div>\n            )}\n            {result.type === 'TEXT' && (\n              <div className=\"prose prose-invert max-w-none\">\n                <p className=\"whitespace-pre-wrap leading-relaxed text-gray-200 text-lg\">\n                  {result.data}\n                </p>\n              </div>\n            )}\n            {result.type === 'TRAVEL' && (\n              <div className=\"space-y-6\">\n                <div className=\"prose prose-invert max-w-none\">\n                  <p className=\"whitespace-pre-wrap leading-relaxed text-gray-200 text-lg\">\n                    {result.data}\n                  </p>\n                </div>\n                {result.links && result.links.length > 0 && (\n                  <div className=\"pt-6 border-t border-white/10\">\n                    <h4 className=\"text-sm font-bold text-emerald-400 uppercase tracking-wider mb-4\">Sources & Useful Links</h4>\n                    <div className=\"grid grid-cols-1 sm:grid-cols-2 gap-3\">\n                      {result.links.map((link: any, idx: number) => (\n                        <a \n                          key={idx} \n                          href={link.uri} \n                          target=\"_blank\" \n                          rel=\"noopener noreferrer\"\n                          className=\"flex items-center space-x-3 p-3 glass-hover bg-white/5 rounded-xl text-sm hover:bg-white/10 transition-colors truncate\"\n                        >\n                          <svg className=\"w-4 h-4 flex-shrink-0 text-emerald-500\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path strokeLinecap=\"round\" strokeLinejoin=\"round\" strokeWidth={2} d=\"M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14\" /></svg>\n                          <span className=\"truncate\">{link.title || link.uri}</span>\n                        </a>\n                      ))}\n                    </div>\n                  </div>\n                )}\n              </div>\n            )}\n          </div>\n        )}\n      </div>\n    );\n  };\n\n  return (\n    <div className=\"min-h-screen relative overflow-hidden bg-[#0f172a]\">\n      {/* Dynamic Background Elements */}\n      <div className=\"absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-indigo-600/20 rounded-full blur-[120px] pointer-events-none\" />\n      <div className=\"absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-pink-600/10 rounded-full blur-[120px] pointer-events-none\" />\n\n      {/* Top Navigation */}\n      <header className=\"fixed top-0 left-0 right-0 z-40 p-6 flex justify-between items-center bg-gradient-to-b from-[#0f172a] to-transparent\">\n        <button \n          onClick={() => setSidebarOpen(true)}\n          className=\"p-3 glass rounded-2xl hover:bg-white/10 transition-all active:scale-90\"\n        >\n          <svg className=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\">\n            <path strokeLinecap=\"round\" strokeLinejoin=\"round\" strokeWidth={2} d=\"M4 6h16M4 12h16M4 18h7\" />\n          </svg>\n        </button>\n        {currentView !== 'HOME' && (\n          <div className=\"font-bold text-xl tracking-tighter mazic-gradient\">MAZIC</div>\n        )}\n        <div className=\"w-12 h-12 rounded-2xl glass flex items-center justify-center\">\n          <div className=\"w-2 h-2 rounded-full bg-green-500 animate-pulse\" />\n        </div>\n      </header>\n\n      <main className=\"relative pt-24 pb-12 z-10\">\n        {currentView === 'HOME' ? renderHome() : renderFeatureView()}\n      </main>\n\n      <Sidebar \n        isOpen={sidebarOpen} \n        onClose={() => setSidebarOpen(false)} \n        onNavigate={(view) => setCurrentView(view)}\n      />\n\n      <style>{`\n        @keyframes fadeIn {\n          from { opacity: 0; }\n          to { opacity: 1; }\n        }\n        @keyframes slideUp {\n          from { opacity: 0; transform: translateY(20px); }\n          to { opacity: 1; transform: translateY(0); }\n        }\n        .animate-fadeIn { animation: fadeIn 0.5s ease-out forwards; }\n        .animate-slideUp { animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }\n      `}</style>\n    </div>\n  );\n};\n\nexport default App;\n"
+            }
+          ]
+        }
+      ]
+    },
+    "createdTimestamp": {
+      "seconds": 1767966271,
+      "nanos": 239000000
+    },
+    "doneTimestamp": {
+      "seconds": 1767966271,
+      "nanos": 365000000
+    }
+  },
+  {
+    "id": 10,
+    "author": "user",
+    "payload": {
+      "type": "text",
+      "text": "Make a type side for question the ai \nAnd make the like this \n                        \n                           Mazic\n                   An AI ASSISTANT \n        GENERATE IMAGE   WRITE STORY \n          LEARN RECIPES   Translate text \n\n      PIN       What is your Question?   Send",
+      "files": [],
+      "fileUploads": [],
+      "cMarkNode": {}
+    },
+    "createdTimestamp": {
+      "seconds": 1767966554,
+      "nanos": 198000000
+    }
+  },
+  {
+    "id": 11,
+    "author": "model",
+    "payload": {
+      "type": "thinking",
+      "text": "**Defining the Mazic Layout**\n\nI am currently working on defining the UI layout of the \"Mazic\" AI Assistant app. I have nailed down the logo placement, which is `MAZIC` at the top with a sub-logo of `AN AI ASSISTANT` below. My next step will be mapping out the main features and visual layout for each. My current focus is creating a mockup to facilitate discussion about further improvements.\n\n\n**Designing the Feature Layout**\n\nI'm now iterating on the design to incorporate quick action buttons for image generation, story writing, recipe learning, and text translation. The bottom input bar will feature a pin icon for attachments, a text input with the placeholder \"What is your Question?\", and a send button. My task now involves updating the home screen buttons and the `handleAction` function in `App.tsx` to include the recipe and general question features.\n\n\n**Adding Recipe & Chat Features**\n\nI am integrating `RECIPE` and `CHAT` features into the UI. I've updated the `FeatureType` enum and created corresponding service functions, `generateRecipe` and `chatWithAI`. I am now focusing on the UI in `App.tsx`, which needs to display the main buttons *and* the question box simultaneously on the home screen, to match the user's prompt design. I will also incorporate image attachment via the \"PIN\" button, using base64. Refinement of the prompt handling is also in progress.\n\n\n**Refining the UI Behavior**\n\nI'm now focusing on how the UI responds to user interaction. Clicking a feature button on the main screen should seamlessly transition the display to that feature's specific UI. The bottom bar, however, always triggers a general chat, updating input intent. I'm also implementing the image upload via the \"Pin\" icon to send image data to Gemini, which is essential to contextually interpret \"Question\" queries, by storing the base64 data. I'm heading into the code to handle these logic flows.\n\n\n",
+      "cMarkNode": {}
+    },
+    "createdTimestamp": {
+      "seconds": 1767966554,
+      "nanos": 198000000
+    },
+    "doneTimestamp": {
+      "seconds": 1767966591,
+      "nanos": 460000000
+    }
+  },
+  {
+    "id": 12,
+    "author": "model",
+    "payload": {
+      "type": "text",
+      "text": "I will update the application to match the specific layout you requested, including the new \"Learn Recipes\" feature and a persistent bottom input bar with \"Pin\" (image attachment) and \"Send\" capabilities.\n\n### Specifications\n1.  **Layout Update**: The Home screen will now feature the centered \"MAZIC\" and \"An AI Assistant\" branding, followed by a 2x2 grid of quick-action cards: Image, Story, Recipes, and Translate.\n2.  **Learn Recipes**: Added a new service function to generate detailed culinary instructions with Gemini.\n3.  **Persistent Bottom Bar**: A sleek, glass-morphism input bar at the bottom containing:\n    *   **PIN Button**: Allows users to upload an image. If an image is pinned, Gemini will use it as visual context for the question.\n    *   **Question Input**: A large text field with the placeholder \"What is your Question?\".\n    *   **Send Button**: Triggers the AI processing.\n4.  **Visual Polish**: Modernized the grid and input bar with gradients and hover effects to maintain the \"world-class\" aesthetic.\n\n",
+      "cMarkNode": {}
+    },
+    "createdTimestamp": {
+      "seconds": 1767966591,
+      "nanos": 460000000
+    },
+    "doneTimestamp": {
+      "seconds": 1767966591,
+      "nanos": 514000000
+    }
+  },
+  {
+    "id": 13,
+    "author": "model",
+    "payload": {
+      "type": "generationTable",
+      "entries": [
+        {
+          "path": "types.ts",
+          "generationType": 1,
+          "isDone": true,
+          "description": "Added RECIPE and CHAT to FeatureType.",
+          "diffs": [
+            {
+              "target": "",
+              "replacement": "\nexport type FeatureType = 'IMAGE' | 'STORY' | 'TRAVEL' | 'TRANSLATE' | 'RECIPE' | 'CHAT' | 'HOME';\n\nexport interface Message {\n  role: 'user' | 'assistant';\n  content: string;\n  imageUrl?: string;\n  groundingLinks?: Array<{ title: string; uri: string }>;\n}\n"
+            }
+          ]
+        },
+        {
+          "path": "services/geminiService.ts",
+          "generationType": 1,
+          "isDone": true,
+          "description": "Added generateRecipe and general chat function.",
+          "diffs": [
+            {
+              "target": "",
+              "replacement": "\nimport { GoogleGenAI, Type, GenerateContentResponse } from \"@google/genai\";\n\nconst getAI = () => new GoogleGenAI({ apiKey: process.env.API_KEY || '' });\n\nexport const generateImage = async (prompt: string): Promise<string | null> => {\n  const ai = getAI();\n  try {\n    const response = await ai.models.generateContent({\n      model: 'gemini-2.5-flash-image',\n      contents: { parts: [{ text: prompt }] },\n      config: {\n        imageConfig: { aspectRatio: \"1:1\" }\n      }\n    });\n\n    for (const part of response.candidates[0].content.parts) {\n      if (part.inlineData) {\n        return `data:image/png;base64,${part.inlineData.data}`;\n      }\n    }\n    return null;\n  } catch (error) {\n    console.error(\"Image generation error:\", error);\n    throw error;\n  }\n};\n\nexport const generateRecipe = async (dish: string): Promise<string> => {\n  const ai = getAI();\n  const response = await ai.models.generateContent({\n    model: 'gemini-3-flash-preview',\n    contents: `Give me a detailed recipe for: ${dish}. Include ingredients, step-by-step instructions, and pro-tips.`,\n    config: {\n      systemInstruction: \"You are a master chef. Provide clear, appetizing, and accurate recipes.\",\n    }\n  });\n  return response.text || \"I couldn't find a recipe for that.\";\n};\n\nexport const askGeneralQuestion = async (question: string, imageBase64?: string): Promise<string> => {\n  const ai = getAI();\n  const parts: any[] = [{ text: question }];\n  \n  if (imageBase64) {\n    parts.push({\n      inlineData: {\n        mimeType: \"image/jpeg\",\n        data: imageBase64.split(',')[1]\n      }\n    });\n  }\n\n  const response = await ai.models.generateContent({\n    model: 'gemini-3-flash-preview',\n    contents: { parts },\n  });\n  return response.text || \"I don't have an answer for that right now.\";\n};\n\nexport const generateStory = async (topic: string): Promise<string> => {\n  const ai = getAI();\n  const response = await ai.models.generateContent({\n    model: 'gemini-3-flash-preview',\n    contents: topic,\n    config: {\n      systemInstruction: \"You are a creative storyteller. Write a compelling, immersive story based on the user's prompt. Use markdown for formatting.\",\n    }\n  });\n  return response.text || \"I couldn't write a story this time.\";\n};\n\nexport const translateText = async (text: string, targetLanguage: string): Promise<string> => {\n  const ai = getAI();\n  const response = await ai.models.generateContent({\n    model: 'gemini-3-flash-preview',\n    contents: `Translate the following text to ${targetLanguage}: \"${text}\"`,\n  });\n  return response.text || \"Translation failed.\";\n};\n"
+            }
+          ]
+        },
+        {
+          "path": "App.tsx",
+          "generationType": 1,
+          "isDone": true,
+          "description": "Updated UI to match the requested layout with 4-button grid and bottom input bar.",
+          "diffs": [
+            {
+              "target": "",
+              "replacement": "\nimport React, { useState, useRef } from 'react';\nimport { Sidebar } from './components/Sidebar';\nimport { FeatureCard } from './components/FeatureCard';\nimport { LoadingSpinner } from './components/LoadingSpinner';\nimport { FeatureType } from './types';\nimport { generateImage, generateStory, generateRecipe, translateText, askGeneralQuestion } from './services/geminiService';\n\nconst App: React.FC = () => {\n  const [sidebarOpen, setSidebarOpen] = useState(false);\n  const [currentView, setCurrentView] = useState<FeatureType>('HOME');\n  const [isLoading, setIsLoading] = useState(false);\n  const [prompt, setPrompt] = useState('');\n  const [result, setResult] = useState<any>(null);\n  const [pinnedImage, setPinnedImage] = useState<string | null>(null);\n  const fileInputRef = useRef<HTMLInputElement>(null);\n\n  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {\n    const file = e.target.files?.[0];\n    if (file) {\n      const reader = new FileReader();\n      reader.onloadend = () => {\n        setPinnedImage(reader.result as string);\n      };\n      reader.readAsDataURL(file);\n    }\n  };\n\n  const handleAction = async (forcedType?: FeatureType) => {\n    const activeType = forcedType || currentView;\n    const inputPrompt = prompt.trim();\n    if (!inputPrompt && !pinnedImage) return;\n\n    setIsLoading(true);\n    setResult(null);\n    \n    // If user uses bottom bar on HOME, it's a general question\n    const effectiveView = (activeType === 'HOME') ? 'CHAT' : activeType;\n    if (effectiveView !== 'HOME') setCurrentView(effectiveView);\n\n    try {\n      let res;\n      switch (effectiveView) {\n        case 'IMAGE':\n          res = await generateImage(inputPrompt);\n          setResult({ type: 'IMAGE', data: res });\n          break;\n        case 'STORY':\n          res = await generateStory(inputPrompt);\n          setResult({ type: 'TEXT', data: res });\n          break;\n        case 'RECIPE':\n          res = await generateRecipe(inputPrompt);\n          setResult({ type: 'TEXT', data: res });\n          break;\n        case 'TRANSLATE':\n          const parts = inputPrompt.split(' to ');\n          res = await translateText(parts[0], parts[1] || 'Spanish');\n          setResult({ type: 'TEXT', data: res });\n          break;\n        case 'CHAT':\n        default:\n          res = await askGeneralQuestion(inputPrompt || \"Tell me about this image\", pinnedImage || undefined);\n          setResult({ type: 'TEXT', data: res });\n          break;\n      }\n      setPrompt('');\n      setPinnedImage(null);\n    } catch (error) {\n      alert(\"Something went wrong. Please try again.\");\n    } finally {\n      setIsLoading(false);\n    }\n  };\n\n  const renderHome = () => (\n    <div className=\"flex flex-col items-center justify-center min-h-[60vh] px-4 space-y-12\">\n      <div className=\"text-center space-y-2\">\n        <h1 className=\"text-7xl md:text-8xl font-black tracking-tighter mazic-gradient drop-shadow-2xl\">\n          MAZIC\n        </h1>\n        <p className=\"text-lg md:text-xl font-medium text-gray-400 tracking-[0.3em] uppercase opacity-80\">\n          An AI Assistant\n        </p>\n      </div>\n\n      <div className=\"grid grid-cols-2 gap-4 w-full max-w-xl\">\n        <FeatureCard \n          title=\"Generate Image\" \n          color=\"blue\"\n          icon={<svg className=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path strokeLinecap=\"round\" strokeLinejoin=\"round\" strokeWidth={2} d=\"M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z\" /></svg>}\n          onClick={() => setCurrentView('IMAGE')}\n        />\n        <FeatureCard \n          title=\"Write Story\" \n          color=\"purple\"\n          icon={<svg className=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path strokeLinecap=\"round\" strokeLinejoin=\"round\" strokeWidth={2} d=\"M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253\" /></svg>}\n          onClick={() => setCurrentView('STORY')}\n        />\n        <FeatureCard \n          title=\"Learn Recipes\" \n          color=\"emerald\"\n          icon={<svg className=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path strokeLinecap=\"round\" strokeLinejoin=\"round\" strokeWidth={2} d=\"M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4\" /></svg>}\n          onClick={() => setCurrentView('RECIPE')}\n        />\n        <FeatureCard \n          title=\"Translate Text\" \n          color=\"pink\"\n          icon={<svg className=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path strokeLinecap=\"round\" strokeLinejoin=\"round\" strokeWidth={2} d=\"M3 5h12M9 3v2m1.048 9.5a18.022 18.022 0 01-3.827-5.802M11 15a11.95 11.95 0 01-2.968-2.815M7.51 5c.67 2.34 2.214 4.478 4.485 6.49m3.234 3.326a2.99 2.99 0 012.828 2.828 2.99 2.99 0 01-2.828 2.828z\" /></svg>}\n          onClick={() => setCurrentView('TRANSLATE')}\n        />\n      </div>\n    </div>\n  );\n\n  return (\n    <div className=\"min-h-screen relative overflow-hidden bg-[#0f172a] text-slate-200\">\n      {/* Dynamic Background */}\n      <div className=\"absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none\" />\n      <div className=\"absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-pink-600/5 rounded-full blur-[120px] pointer-events-none\" />\n\n      {/* Top Header */}\n      <header className=\"fixed top-0 left-0 right-0 z-40 p-6 flex justify-between items-center bg-gradient-to-b from-[#0f172a] to-transparent\">\n        <button onClick={() => setSidebarOpen(true)} className=\"p-3 glass rounded-2xl hover:bg-white/10 transition-all\">\n          <svg className=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path strokeLinecap=\"round\" strokeLinejoin=\"round\" strokeWidth={2} d=\"M4 6h16M4 12h16M4 18h7\" /></svg>\n        </button>\n        {currentView !== 'HOME' && (\n          <div className=\"font-bold text-xl tracking-tighter mazic-gradient cursor-pointer\" onClick={() => {setCurrentView('HOME'); setResult(null)}}>MAZIC</div>\n        )}\n        <div className=\"w-10 h-10 rounded-xl glass flex items-center justify-center\">\n          <div className=\"w-2 h-2 rounded-full bg-indigo-500 animate-pulse\" />\n        </div>\n      </header>\n\n      <main className=\"pt-24 pb-32 px-4 max-w-4xl mx-auto overflow-y-auto\">\n        {currentView === 'HOME' ? renderHome() : (\n          <div className=\"space-y-6 animate-fadeIn\">\n             <div className=\"flex items-center justify-between\">\n                <h2 className=\"text-2xl font-bold text-white uppercase tracking-widest\">{currentView} MODE</h2>\n                <button onClick={() => {setCurrentView('HOME'); setResult(null)}} className=\"text-sm text-gray-400 hover:text-white transition-colors\">Close</button>\n             </div>\n             {isLoading && <LoadingSpinner />}\n             {result && (\n               <div className=\"glass p-6 rounded-3xl animate-slideUp border border-white/5\">\n                 {result.type === 'IMAGE' ? (\n                   <img src={result.data} className=\"rounded-2xl w-full shadow-2xl\" alt=\"Result\" />\n                 ) : (\n                   <div className=\"prose prose-invert max-w-none text-lg leading-relaxed whitespace-pre-wrap\">{result.data}</div>\n                 )}\n               </div>\n             )}\n          </div>\n        )}\n      </main>\n\n      {/* Bottom Input Bar */}\n      <div className=\"fixed bottom-0 left-0 right-0 p-4 md:p-8 bg-gradient-to-t from-[#0f172a] via-[#0f172a]/90 to-transparent z-40\">\n        <div className=\"max-w-3xl mx-auto relative\">\n          {pinnedImage && (\n            <div className=\"absolute bottom-full mb-4 left-4 animate-slideUp\">\n              <div className=\"relative group\">\n                <img src={pinnedImage} className=\"w-20 h-20 object-cover rounded-xl border-2 border-indigo-500 shadow-xl\" />\n                <button \n                  onClick={() => setPinnedImage(null)}\n                  className=\"absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity\"\n                >\n                  <svg className=\"w-3 h-3\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path strokeLinecap=\"round\" strokeLinejoin=\"round\" strokeWidth={2} d=\"M6 18L18 6M6 6l12 12\" /></svg>\n                </button>\n              </div>\n            </div>\n          )}\n          \n          <div className=\"glass rounded-full p-2 flex items-center shadow-2xl border border-white/10 group focus-within:border-indigo-500/50 transition-all\">\n            <input \n              type=\"file\" \n              ref={fileInputRef} \n              className=\"hidden\" \n              accept=\"image/*\" \n              onChange={handleFileUpload} \n            />\n            <button \n              onClick={() => fileInputRef.current?.click()}\n              className=\"p-3 text-gray-400 hover:text-indigo-400 transition-colors\"\n              title=\"Pin an image\"\n            >\n              <svg className=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path strokeLinecap=\"round\" strokeLinejoin=\"round\" strokeWidth={2} d=\"M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13\" /></svg>\n            </button>\n\n            <input \n              type=\"text\"\n              value={prompt}\n              onChange={(e) => setPrompt(e.target.value)}\n              onKeyDown={(e) => e.key === 'Enter' && handleAction()}\n              placeholder=\"What is your Question?\"\n              className=\"flex-1 bg-transparent border-none focus:ring-0 text-white px-4 placeholder:text-gray-500 font-medium\"\n            />\n\n            <button \n              onClick={() => handleAction()}\n              disabled={isLoading || (!prompt.trim() && !pinnedImage)}\n              className=\"bg-indigo-600 hover:bg-indigo-500 disabled:bg-gray-700 text-white px-6 py-2 rounded-full font-bold transition-all shadow-lg active:scale-95 flex items-center space-x-2\"\n            >\n              <span>{isLoading ? '...' : 'Send'}</span>\n              {!isLoading && <svg className=\"w-4 h-4\" fill=\"currentColor\" viewBox=\"0 0 20 20\"><path d=\"M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z\" /></svg>}\n            </button>\n          </div>\n        </div>\n      </div>\n\n      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} onNavigate={(v) => setCurrentView(v)} />\n\n      <style>{`\n        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }\n        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }\n        .animate-fadeIn { animation: fadeIn 0.3s ease-out; }\n        .animate-slideUp { animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); }\n      `}</style>\n    </div>\n  );\n};\n\nexport default App;\n"
+            }
+          ]
+        },
+        {
+          "path": "components/FeatureCard.tsx",
+          "generationType": 1,
+          "isDone": true,
+          "description": "Optimized card sizing for the 2x2 grid layout.",
+          "diffs": [
+            {
+              "target": "",
+              "replacement": "\nimport React from 'react';\n\ninterface FeatureCardProps {\n  title: string;\n  icon: React.ReactNode;\n  color: string;\n  onClick: () => void;\n}\n\nexport const FeatureCard: React.FC<FeatureCardProps> = ({ title, icon, color, onClick }) => {\n  const colorMap: Record<string, string> = {\n    blue: 'from-blue-500/20 to-indigo-500/5 text-blue-400 border-blue-500/20',\n    purple: 'from-purple-500/20 to-pink-500/5 text-purple-400 border-purple-500/20',\n    emerald: 'from-emerald-500/20 to-teal-500/5 text-emerald-400 border-emerald-500/20',\n    pink: 'from-pink-500/20 to-red-500/5 text-pink-400 border-pink-500/20',\n  };\n\n  return (\n    <button \n      onClick={onClick}\n      className={`group relative overflow-hidden glass p-6 rounded-3xl transition-all duration-300 hover:scale-[1.02] border border-white/5 flex flex-col items-center justify-center space-y-3 bg-gradient-to-br ${colorMap[color] || colorMap.blue}`}\n    >\n      <div className=\"p-3 rounded-2xl bg-white/5 group-hover:scale-110 transition-transform duration-300\">\n        {icon}\n      </div>\n      <span className=\"text-[10px] md:text-xs font-black tracking-[0.2em] text-gray-300 group-hover:text-white transition-colors uppercase text-center\">\n        {title}\n      </span>\n    </button>\n  );\n};\n"
+            }
+          ]
+        }
+      ]
+    },
+    "createdTimestamp": {
+      "seconds": 1767966592,
+      "nanos": 171000000
+    },
+    "doneTimestamp": {
+      "seconds": 1767966592,
+      "nanos": 946000000
+    }
+  }
+]

@@ -1,0 +1,9 @@
+{
+  "name": "Mazic AI Assistant",
+  "description": "A powerful multi-modal AI assistant capable of generating images, writing stories, planning travel, and translating text with a sleek, modern interface.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ]
+}
